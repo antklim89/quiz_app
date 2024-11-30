@@ -38,4 +38,7 @@ useSeoMeta({
 .link {
   @apply text-primary-800 hover:underline hover:text-primary-900 transition-colors;
 }
+.btn {
+  @apply bg-primary-600 text-white rounded-md px-8 py-4;
+}
 </style>
