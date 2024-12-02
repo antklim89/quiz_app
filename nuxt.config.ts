@@ -7,5 +7,11 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
 
+  runtimeConfig: {
+    public: {
+      apiURL: process.env.API_URL,
+    },
+  },
+
   modules: ['@nuxtjs/tailwindcss', '@nuxt/image'],
 });
