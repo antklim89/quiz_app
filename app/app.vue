@@ -39,6 +39,9 @@ useSeoMeta({
   @apply text-primary-800 hover:underline hover:text-primary-900 transition-colors;
 }
 .btn {
-  @apply bg-primary-600 text-white rounded-md px-8 py-4;
+  @apply bg-primary-600 hover:bg-primary-700 text-white rounded-md px-8 py-4;
+}
+.select {
+  @apply text-primary-900 bg-primary-50 p-4 rounded-md hover:bg-primary-100 transition-colors hover:no-underline uppercase;
 }
 </style>

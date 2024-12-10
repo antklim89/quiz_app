@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { CATEGORIES, DIFFICULTIES } from '@/lib/constants';
-import type { CategoryId, Difficulty } from '~/lib/types';
+import { CATEGORIES, DIFFICULTIES } from '~/constants';
+import type { CategoryId, Difficulty } from '~/types';
 
 
 const selectedDifficulty = ref<Difficulty | null>(null);
@@ -12,8 +12,8 @@ const selectedCategory = ref<CategoryId | null>(null);
     <button
       v-for="difficulty in DIFFICULTIES"
       :key="difficulty"
-      class="text-primary-900 bg-primary-50 p-4 rounded-md hover:bg-primary-100 transition-colors hover:no-underline uppercase"
-      :class="{ 'bg-red-100': selectedDifficulty === difficulty }"
+      class="select uppercase"
+      :class="{ '!bg-red-100': selectedDifficulty === difficulty }"
       @click="selectedDifficulty = difficulty"
     >
       {{ difficulty }}
@@ -24,8 +24,8 @@ const selectedCategory = ref<CategoryId | null>(null);
     <button
       v-for="categoryId, category in CATEGORIES"
       :key="category"
-      class="text-primary-900 bg-primary-50 p-4 rounded-md hover:bg-primary-100 transition-colors hover:no-underline"
-      :class="{ 'bg-red-100': selectedCategory === categoryId }"
+      class="select"
+      :class="{ '!bg-red-100': selectedCategory === categoryId }"
       @click="selectedCategory = categoryId"
     >
       {{ category }}

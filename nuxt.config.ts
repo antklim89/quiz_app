@@ -13,5 +13,9 @@ export default defineNuxtConfig({
     },
   },
 
+  routeRules: {
+    '/questions/**': { ssr: false },
+  },
+
   modules: ['@nuxtjs/tailwindcss', '@nuxt/image'],
 });
