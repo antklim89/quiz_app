@@ -1,10 +1,9 @@
-import type { CategoryId, Difficulty, Question } from '~/types';
+import type {
+  CategoryId,
+  Difficulty,
+  QuestionStore,
+} from '~/types';
 
-
-interface StoragePayload {
-  questions: Question[];
-  answers: Record<string, string>;
-}
 
 interface StorageKeys {
   categoryId: CategoryId;
@@ -13,23 +12,22 @@ interface StorageKeys {
 
 export function saveQuestionsToLocalStorage({
   questions,
-  answers,
   categoryId,
   difficulty,
-}: StoragePayload & StorageKeys) {
-  const payload: StoragePayload = { questions, answers };
-  localStorage.setItem(`questions:${difficulty}:${categoryId}`, JSON.stringify(payload));
+}: { questions: QuestionStore | null } & StorageKeys): void {
+  if (questions == null) return;
+  localStorage.setItem(`questions:${difficulty}:${categoryId}`, JSON.stringify(questions));
 }
 
 export function loadQuestionsFromLocalStorage({
   categoryId,
   difficulty,
-}: StorageKeys): null | StoragePayload {
+}: StorageKeys): null | QuestionStore {
   const questionsStr = localStorage.getItem(`questions:${difficulty}:${categoryId}`);
   if (questionsStr == null) return null;
 
   try {
-    const questionsJson = JSON.parse(questionsStr) as StoragePayload;
+    const questionsJson = JSON.parse(questionsStr) as QuestionStore;
     return questionsJson;
   } catch {
     return null;

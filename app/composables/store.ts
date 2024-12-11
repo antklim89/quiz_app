@@ -1,18 +1,14 @@
-import type { CategoryId, Difficulty } from '~/types';
+import type { CategoryId, Difficulty, QuestionStore } from '~/types';
 
 
 export function useQuestionsStore({ categoryId, difficulty }: { difficulty: Difficulty; categoryId: CategoryId }) {
   const storageQuestions = loadQuestionsFromLocalStorage({ categoryId, difficulty });
 
-  const store = useState(`questions:${difficulty}:${categoryId}`, () => ({
-    questions: storageQuestions?.questions || [],
-    answers: storageQuestions?.answers || {},
-  }));
+  const store = useState<QuestionStore | null>(`questions:${difficulty}:${categoryId}`, () => (storageQuestions ?? null));
 
   watchEffect(() => {
     saveQuestionsToLocalStorage({
-      questions: store.value.questions,
-      answers: store.value.answers,
+      questions: store.value,
       categoryId,
       difficulty,
     });

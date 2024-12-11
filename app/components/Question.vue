@@ -14,20 +14,14 @@ const {
 }>();
 const page = computed(() => Number(pageStr || 1));
 const questionsStore = useQuestionsStore({ categoryId, difficulty });
-const questions = computed(() => questionsStore.value.questions || []);
-const question = computed(() => questions.value[page.value - 1]);
+const question = computed(() => questionsStore.value?.[page.value]);
 
-const questionVariants = computed(() => {
-  const results = question.value && [question.value.correct_answer, ...question.value.incorrect_answers];
-  if (question.value?.type === 'multiple') results?.sort(() => Math.random() - 0.5);
-  if (question.value?.type === 'boolean') results?.sort(a => a === 'True' ? -1 : 1);
-  return results;
-});
+const answersLength = computed(() => questionsStore.value ? Object.values(questionsStore.value).filter(i => i.selectedAnswer != null).length : 0);
 </script>
 
 
 <template>
-  <section v-if="question != null && questionVariants != null" class="space-y-28 my-4 md:my-8">
+  <section v-if="question != null" class="space-y-28 my-4 md:my-8">
     <h2 class="text-2xl font-bold text-center">
       {{ question.category }}
     </h2>
@@ -38,13 +32,13 @@ const questionVariants = computed(() => {
     </div>
     <div class="grid grid-cols-2 gap-4">
       <button
-        v-for="variant in questionVariants"
-        :key="variant"
-        :class="{ '!bg-red-100': questionsStore.answers[page] === variant }"
+        v-for="answer in question.answers"
+        :key="answer"
+        :class="{ '!bg-red-100': question.selectedAnswer === answer }"
         class="select"
-        @click="questionsStore.answers[page] = variant"
+        @click="question.selectedAnswer = answer"
       >
-        {{ variant }}
+        {{ answer }}
       </button>
     </div>
     <div class="flex justify-between">
@@ -54,6 +48,13 @@ const questionVariants = computed(() => {
         :to="`/questions/${difficulty}/${categoryId}?page=${page - 1}`"
       >
         Previous question
+      </NuxtLink>
+      <NuxtLink
+        :class="{ invisible: answersLength !== AMOUNT }"
+        class="btn"
+        :to="`/questions/${difficulty}/${categoryId}/results`"
+      >
+        Show results
       </NuxtLink>
       <NuxtLink
         :class="{ invisible: page >= AMOUNT }"

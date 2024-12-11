@@ -16,10 +16,10 @@ export function fetchQuestions({
 }) {
   return useAsyncData(`questions:${categoryId}:${difficulty}`, async () => {
     const questionsStored = useQuestionsStore({ categoryId, difficulty });
-    if (questionsStored.value.questions.length !== 0) return questionsStored.value.questions;
+    if (questionsStored.value != null) return questionsStored.value.questions;
 
     const { public: { apiURL } } = useRuntimeConfig();
-    const { results } = await $fetch<QuestionResponse>(apiURL, {
+    const response = await $fetch<QuestionResponse>(apiURL, {
       params: {
         amount: AMOUNT,
         difficulty,
@@ -27,8 +27,10 @@ export function fetchQuestions({
       },
     });
 
-    questionsStored.value.questions = results;
+    const questions = questionTransform(response);
 
-    return results;
+    questionsStored.value = questions;
+
+    return questions;
   });
 }

@@ -1,18 +1,31 @@
 import type { CATEGORIES, DIFFICULTIES } from './constants';
 
 
-export interface Question {
-  type: string;
-  difficulty: string;
+export type QuestionTypeType = 'multiple' | 'boolean';
+
+export interface QuestionType {
+  type: QuestionTypeType;
+  difficulty: Difficulty;
   category: string;
   question: string;
-  correct_answer: string;
-  incorrect_answers: string[];
+  correctAnswer: string;
+  incorrectAnswers: string[];
+  answers: string[];
+  selectedAnswer?: string;
 }
+
+export type QuestionStore = Record<string, QuestionType>;
 
 export interface QuestionResponse {
   response_code: number;
-  results: Question[];
+  results: {
+    type: string;
+    difficulty: string;
+    category: string;
+    question: string;
+    correct_answer: string;
+    incorrect_answers: string[];
+  }[];
 }
 
 export type CategoryName = keyof typeof CATEGORIES;
