@@ -9,8 +9,8 @@ definePageMeta({
     && Number(params.page || '1') <= 10
     && typeof params.categoryId === 'string'
     && typeof params.difficulty === 'string'
-    && Object.values(CATEGORIES).includes(params.categoryId as CategoryId)
-    && Object.values(DIFFICULTIES).includes(params.difficulty as Difficulty),
+    && Object.keys(CATEGORIES).includes(params.categoryId as CategoryId)
+    && DIFFICULTIES.includes(params.difficulty as Difficulty),
 });
 
 const { params } = useRoute();

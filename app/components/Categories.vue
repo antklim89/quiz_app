@@ -22,7 +22,7 @@ const selectedCategory = ref<CategoryId | null>(null);
 
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 my-8 md:my-12">
     <button
-      v-for="categoryId, category in CATEGORIES"
+      v-for="category, categoryId in CATEGORIES"
       :key="category"
       class="select"
       :class="{ '!bg-red-100': selectedCategory === categoryId }"

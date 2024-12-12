@@ -28,6 +28,6 @@ export interface QuestionResponse {
   }[];
 }
 
-export type CategoryName = keyof typeof CATEGORIES;
-export type CategoryId = typeof CATEGORIES[CategoryName];
+export type CategoryId = keyof typeof CATEGORIES;
+export type CategoryName = typeof CATEGORIES[CategoryId];
 export type Difficulty = typeof DIFFICULTIES[number];
