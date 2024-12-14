@@ -15,8 +15,6 @@ const {
 const page = computed(() => Number(pageStr || 1));
 const questionsStore = useQuestionsStore({ categoryId, difficulty });
 const question = computed(() => questionsStore.value?.[page.value]);
-
-const answersLength = computed(() => questionsStore.value ? Object.values(questionsStore.value).filter(i => i.selectedAnswer != null).length : 0);
 </script>
 
 
@@ -41,25 +39,23 @@ const answersLength = computed(() => questionsStore.value ? Object.values(questi
         {{ answer }}
       </button>
     </div>
-    <div class="flex justify-between">
+
+    <AnswersCount :category-id="categoryId" :difficulty="difficulty" />
+
+    <div class="flex justify-between gap-2">
       <NuxtLink
-        :class="{ invisible: page <= 1 }"
+        :tabindex="page <= 1 ? -1 : 0"
+        :class="{ 'opacity-50 pointer-events-none': page <= 1 }"
         class="btn"
-        :to="`/questions/${difficulty}/${categoryId}?page=${page - 1}`"
+        :to="page <= 1 ? undefined : `/questions/${difficulty}/${categoryId}?page=${page - 1}`"
       >
         Previous question
       </NuxtLink>
       <NuxtLink
-        :class="{ invisible: answersLength !== AMOUNT }"
+        :tabindex="page >= AMOUNT ? -1 : 0"
+        :class="{ 'opacity-50 pointer-events-none': page >= AMOUNT }"
         class="btn"
-        :to="`/questions/${difficulty}/${categoryId}/results`"
-      >
-        Show results
-      </NuxtLink>
-      <NuxtLink
-        :class="{ invisible: page >= AMOUNT }"
-        class="btn"
-        :to="`/questions/${difficulty}/${categoryId}?page=${page + 1}`"
+        :to="page >= AMOUNT ? undefined : `/questions/${difficulty}/${categoryId}?page=${page + 1}`"
       >
         Next question
       </NuxtLink>
