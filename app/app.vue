@@ -35,6 +35,9 @@ useSeoMeta({
 </template>
 
 <style>
+html {
+  scroll-behavior: smooth;
+}
 .link {
   @apply text-primary-800 hover:underline hover:text-primary-900 transition-colors;
 }
