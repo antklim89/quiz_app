@@ -5,19 +5,23 @@ import type {
   QuestionType,
   QuestionTypeType,
 } from '~/types';
+import { decodeHtml } from './decode-html';
 
 
 export function questionTransform(questionResponse: QuestionResponse): QuestionStore {
   const questions: QuestionStore = questionResponse.results.reduce((acc, question, index) => {
     const type = question.type as QuestionTypeType;
 
+    const incorrectAnswers = question.incorrect_answers.map(decodeHtml);
+    const correctAnswer = decodeHtml(question.correct_answer);
+
     acc[index + 1] = {
       type,
       category: question.category,
-      question: question.question,
-      answers: sortAnswers(type, [question.correct_answer, ...question.incorrect_answers]),
-      correctAnswer: question.correct_answer,
-      incorrectAnswers: question.incorrect_answers,
+      question: decodeHtml(question.question),
+      answers: sortAnswers(type, [correctAnswer, ...incorrectAnswers]),
+      correctAnswer,
+      incorrectAnswers,
       difficulty: question.difficulty as Difficulty,
       selectedAnswer: undefined,
     };
