@@ -20,7 +20,7 @@ const question = computed(() => questionsStore.value?.[page.value]);
 
 <template>
   <section v-if="question != null" class="space-y-28 my-4 md:my-8">
-    <h2 class="text-2xl font-bold text-center">
+    <h2 id="question-title" class="text-2xl font-bold text-center">
       {{ question.category }}
     </h2>
     <div>
@@ -46,18 +46,18 @@ const question = computed(() => questionsStore.value?.[page.value]);
       <NuxtLink
         :tabindex="page <= 1 ? -1 : 0"
         :class="{ 'opacity-50 pointer-events-none': page <= 1 }"
-        class="btn"
-        :to="page <= 1 ? undefined : `/questions/${difficulty}/${categoryId}?page=${page - 1}`"
+        class="btn uppercase"
+        :to="page <= 1 ? undefined : `/questions/${difficulty}/${categoryId}?page=${page - 1}#question-title`"
       >
-        Previous question
+        Previous
       </NuxtLink>
       <NuxtLink
         :tabindex="page >= AMOUNT ? -1 : 0"
         :class="{ 'opacity-50 pointer-events-none': page >= AMOUNT }"
-        class="btn"
-        :to="page >= AMOUNT ? undefined : `/questions/${difficulty}/${categoryId}?page=${page + 1}`"
+        class="btn uppercase"
+        :to="page >= AMOUNT ? undefined : `/questions/${difficulty}/${categoryId}?page=${page + 1}#question-title`"
       >
-        Next question
+        Next
       </NuxtLink>
     </div>
   </section>
