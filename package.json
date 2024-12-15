@@ -1,7 +1,15 @@
 {
-  "name": "nuxt-app",
+  "name": "quiz_app",
   "type": "module",
   "private": true,
+  "description": "Simple quiz app.",
+  "author": "Me",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antklim89/quiz_app"
+  },
+  "keywords": ["quiz", "nuxt", "typescript", "tailwind", "vue"],
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev --host",
