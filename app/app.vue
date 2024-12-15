@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/800.css';
+import '@fontsource/inter/400-italic.css';
+import '@fontsource/inter/800-italic.css';
+
+
 const title = 'Quiz App';
 const description = 'A simple quiz app';
 
@@ -35,6 +41,10 @@ useSeoMeta({
 </template>
 
 <style>
+body {
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
+}
 html {
   scroll-behavior: smooth;
 }
