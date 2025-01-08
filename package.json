@@ -2,6 +2,7 @@
   "name": "quiz_app",
   "type": "module",
   "private": true,
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
   "description": "Simple quiz app.",
   "author": "Me",
   "license": "MIT",
@@ -9,7 +10,13 @@
     "type": "git",
     "url": "https://github.com/antklim89/quiz_app"
   },
-  "keywords": ["quiz", "nuxt", "typescript", "tailwind", "vue"],
+  "keywords": [
+    "quiz",
+    "nuxt",
+    "typescript",
+    "tailwind",
+    "vue"
+  ],
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev --host",
@@ -18,17 +25,17 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@fontsource/inter": "^5.1.0",
-    "@nuxt/image": "^1.8.1",
+    "@fontsource/inter": "^5.1.1",
+    "@nuxt/image": "^1.9.0",
     "@nuxtjs/tailwindcss": "^6.12.2",
-    "nuxt": "^3.14.1592",
+    "nuxt": "^3.15.1",
     "vue": "latest",
     "vue-router": "latest"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^3.9.2",
-    "eslint": "^9.15.0",
-    "eslint-plugin-format": "^0.1.2",
+    "@antfu/eslint-config": "^3.12.2",
+    "eslint": "^9.17.0",
+    "eslint-plugin-format": "^1.0.1",
     "typescript": "^5.7.2"
   }
 }
