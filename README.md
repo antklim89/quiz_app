@@ -8,9 +8,7 @@ Simple quiz app
 ## Production
 
 ```
-yarn install
-yarn build
-yarn start
+yarn docker:up
 ```
 ## Development
 

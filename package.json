@@ -22,7 +22,10 @@
     "dev": "nuxt dev --host",
     "generate": "nuxt generate",
     "start": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "docker:up": "docker-compose up --build",
+    "docker:down": "docker-compose down",
+    "docker:build": "docker-compose build"
   },
   "dependencies": {
     "@fontsource/inter": "^5.1.1",

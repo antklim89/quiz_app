@@ -1,0 +1,11 @@
+services:
+  app:
+    image: development.cr.cloud.ru/quiz_app:latest
+    build: 
+      args:
+        - API_URL=${API_URL}
+      context: .
+    ports:
+      - 3000:3000
+    environment:
+      - API_URL=https://opentdb.com/api.php
