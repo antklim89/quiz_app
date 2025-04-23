@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useTemplateRef } from 'vue';
 import { AMOUNT } from '~/constants';
 import type { CategoryId, Difficulty } from '~/types';
 
@@ -15,6 +16,32 @@ const {
 const page = computed(() => Number(pageStr || 1));
 const questionsStore = useQuestionsStore({ categoryId, difficulty });
 const question = computed(() => questionsStore.value?.[page.value]);
+
+const nextLink = computed(() => page.value >= AMOUNT ? undefined : `/questions/${difficulty}/${categoryId}?page=${page.value + 1}#question-title`);
+const prevLink = computed(() => page.value <= 1 ? undefined : `/questions/${difficulty}/${categoryId}?page=${page.value - 1}#question-title`);
+
+const answers = useTemplateRef(`answers`);
+
+function listener(e: KeyboardEvent) {
+  if (e.key === 'ArrowRight' || e.key === 'Enter') {
+    if (nextLink.value == null) navigateTo(`/questions/${difficulty}/${categoryId}/results`);
+    else navigateTo(nextLink.value);
+  }
+  if (e.key === 'ArrowLeft' || e.key === 'Backspace') {
+    if (nextLink.value == null) navigateTo('/');
+    else navigateTo(prevLink.value);
+  }
+
+  question.value?.answers.forEach((answer, index) => {
+    if (e.key === String(index + 1)) {
+      const button = answers.value?.querySelector(`[data-answer-number="${index + 1}"]`);
+      if (button instanceof HTMLButtonElement) button.click();
+    }
+  });
+}
+
+onMounted(() => window.addEventListener('keydown', listener));
+onUnmounted(() => window.removeEventListener('keydown', listener));
 </script>
 
 
@@ -28,15 +55,13 @@ const question = computed(() => questionsStore.value?.[page.value]);
         {{ question.question }}
       </p>
     </div>
-    <div class="grid grid-cols-2 gap-4">
+    <div ref="answers" class="columns-1 md:columns-2 space-x-4 space-y-4">
       <button
-        v-for="answer in question.answers"
-        :key="answer"
-        :class="{ '!bg-red-100': question.selectedAnswer === answer }"
-        class="select"
+        v-for="answer, index in question.answers" :key="answer" :data-answer-number="index + 1"
+        :class="{ '!bg-red-100': question.selectedAnswer === answer }" class="select w-full"
         @click="question.selectedAnswer = answer"
       >
-        {{ answer }}
+        ({{ index + 1 }}) {{ answer }}
       </button>
     </div>
 
@@ -47,7 +72,7 @@ const question = computed(() => questionsStore.value?.[page.value]);
         :tabindex="page <= 1 ? -1 : 0"
         :class="{ 'opacity-50 pointer-events-none': page <= 1 }"
         class="btn uppercase"
-        :to="page <= 1 ? undefined : `/questions/${difficulty}/${categoryId}?page=${page - 1}#question-title`"
+        :to="prevLink"
       >
         Previous
       </NuxtLink>
@@ -55,7 +80,7 @@ const question = computed(() => questionsStore.value?.[page.value]);
         :tabindex="page >= AMOUNT ? -1 : 0"
         :class="{ 'opacity-50 pointer-events-none': page >= AMOUNT }"
         class="btn uppercase"
-        :to="page >= AMOUNT ? undefined : `/questions/${difficulty}/${categoryId}?page=${page + 1}#question-title`"
+        :to="nextLink"
       >
         Next
       </NuxtLink>
