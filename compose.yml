@@ -1,7 +1,7 @@
 services:
   app:
     image: development.cr.cloud.ru/quiz_app:latest
-    build: 
+    build:
       args:
         - API_URL=${API_URL}
       context: .

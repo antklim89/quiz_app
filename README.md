@@ -3,21 +3,21 @@
 Simple quiz app
 
 
-# Run
+## Run
 
-## Production
+### Production
 
 ```
 yarn docker:up
 ```
-## Development
+### Development
 
 ```
 yarn install
 yarn dev
 ```
 
-# Envs
+## Envs
 
 ```
 API_URL=https://opentdb.com/api.php

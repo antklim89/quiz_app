@@ -1,8 +1,4 @@
-import type {
-  CategoryId,
-  Difficulty,
-  QuestionStore,
-} from '~/types';
+import type { CategoryId, Difficulty, QuestionStore } from '~/types';
 
 
 interface StorageKeys {

@@ -13,6 +13,7 @@ export default antfu(
     typescript: {
       tsconfigPath: path.resolve('./tsconfig.json'),
       overridesTypeAware: {
+        'ts/promise-function-async': 'off',
         'ts/restrict-template-expressions': ['error', {
           allowAny: false,
           allowBoolean: false,
@@ -37,10 +38,9 @@ export default antfu(
     ignores: [
       'public',
       '**/node_modules/**',
-      '**/build/**',
-      '**/out/**',
-      '**/dist/**',
-      '.netlify',
+      '**/nuxt/**',
+      'nuxt.config.ts',
+      'tailwind.config.ts',
     ],
 
     rules: {
@@ -53,29 +53,26 @@ export default antfu(
           type: 'alphabetical',
           order: 'asc',
           internalPattern: ['^(~|@)/.*'],
-          newlinesBetween: 'never',
+          newlinesBetween: 0,
           groups: [
-            'custom',
+            'react',
             'style',
             'side-effect',
             'side-effect-style',
-            ['builtin', 'builtin-type'],
-            ['external', 'external-type'],
-            ['internal', 'internal-type'],
-            ['sibling', 'sibling-type'],
-            ['parent', 'parent-type'],
-            ['index', 'index-type'],
-            'object',
+            ['value-builtin', 'type-builtin'],
+            ['value-external', 'type-external'],
+            ['value-internal', 'type-internal'],
+            ['value-sibling', 'type-sibling'],
+            ['value-parent', 'type-parent'],
+            ['index', 'type-index'],
             'unknown',
           ],
-          customGroups: {
-            value: {
-              custom: ['react', 'react-dom', 'next', 'next/*'],
+          customGroups: [
+            {
+              groupName: 'react',
+              elementNamePattern: ['^react$', '^react-.', '^next$', '^next-.'],
             },
-            type: {
-              custom: ['react', 'react-dom', 'next', 'next/*'],
-            },
-          },
+          ],
         },
       ],
       'no-restricted-imports': ['error', { patterns: ['../'] }],
