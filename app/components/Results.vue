@@ -11,12 +11,15 @@ const {
   difficulty: Difficulty;
 }>();
 
-const questionsStore = useQuestionsStore({ categoryId, difficulty });
-const correctAnswersLength = computed(() => questionsStore.value ? Object.values(questionsStore.value).filter(i => i.selectedAnswer === i.correctAnswer).length : 0);
-const wrongAnswersLength = computed(() => questionsStore.value ? Object.values(questionsStore.value).length - correctAnswersLength.value : 0);
+const {
+  questions,
+  correctAnswersLength,
+  wrongAnswersLength,
+  resetQuestions,
+} = useQuestionsStore({ categoryId, difficulty });
 
-function resetQuestions() {
-  questionsStore.value = null;
+function navigateToNewQuestions() {
+  resetQuestions();
   navigateTo(`/questions/${difficulty}/${categoryId}`);
 }
 </script>
@@ -39,7 +42,7 @@ function resetQuestions() {
 
     <div class="space-y-6">
       <div
-        v-for="question in questionsStore"
+        v-for="question in questions"
         :key="question.question"
         class="border space-y-4 border-primary-600 rounded-md p-4"
       >
@@ -65,7 +68,7 @@ function resetQuestions() {
     </div>
 
     <div class="flex flex-col sm:flex-row justify-center gap-4">
-      <button type="button" class="btn uppercase text-center" @click="resetQuestions">
+      <button type="button" class="btn uppercase text-center" @click="navigateToNewQuestions">
         NEW
       </button>
       <NuxtLink class="btn uppercase text-center" to="/">

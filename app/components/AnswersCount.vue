@@ -10,8 +10,7 @@ const {
   categoryId: CategoryId;
   difficulty: Difficulty;
 }>();
-const questionsStore = useQuestionsStore({ categoryId, difficulty });
-const answersLength = computed(() => questionsStore.value ? Object.values(questionsStore.value).filter(i => i.selectedAnswer != null).length : 0);
+const { answersLength } = useQuestionsStore({ categoryId, difficulty });
 </script>
 
 <template>

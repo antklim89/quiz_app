@@ -8,13 +8,12 @@ const { categoryName, categoryId } = defineProps<{
   categoryId: CategoryId;
 }>();
 
-const storeArray = computed(() => DIFFICULTIES.map((difficulty) => {
-  const store = import.meta.server ? null : useQuestionsStore({ categoryId, difficulty });
-  const answersLength = store?.value ? Object.values(store.value).filter(i => i.selectedAnswer != null).length : 0;
-  const lastAnsweredQuestion = store?.value ? Object.values(store.value).findIndex(i => i.selectedAnswer == null) + 1 : 1;
-
-  return { difficulty, answersLength, lastAnsweredQuestion };
-}));
+const storeArray = computed(() =>
+  DIFFICULTIES.map((difficulty) => {
+    const { answersLength, lastAnsweredQuestion } = useQuestionsStore({ categoryId, difficulty });
+    return { difficulty, answersLength, lastAnsweredQuestion };
+  }),
+);
 </script>
 
 <template>
@@ -28,7 +27,7 @@ const storeArray = computed(() => DIFFICULTIES.map((difficulty) => {
       :key="difficulty"
       class="flex flex-col space-y-2"
     >
-      <NuxtLink v-if="answersLength < AMOUNT" class="btn uppercase" :to="`/questions/${difficulty}/${categoryId}?page=${lastAnsweredQuestion}`">
+      <NuxtLink v-if="answersLength.value < AMOUNT" class="btn uppercase" :to="`/questions/${difficulty}/${categoryId}?page=${lastAnsweredQuestion.value}`">
         <span>{{ difficulty }} | {{ answersLength }} / {{ AMOUNT }}</span>
       </NuxtLink>
 

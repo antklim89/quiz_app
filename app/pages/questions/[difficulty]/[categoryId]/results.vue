@@ -19,5 +19,7 @@ const difficulty = params.difficulty as Difficulty;
 </script>
 
 <template>
-  <Results :category-id="categoryId" :difficulty="difficulty" />
+  <ClientOnly>
+    <Results :category-id="categoryId" :difficulty="difficulty" />
+  </ClientOnly>
 </template>

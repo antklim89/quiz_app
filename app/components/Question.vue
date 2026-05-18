@@ -1,42 +1,42 @@
 <script setup lang="ts">
-import { useTemplateRef } from 'vue';
 import { AMOUNT } from '~/constants';
-import type { CategoryId, Difficulty } from '~/types';
+import type { CategoryId, Difficulty, QuestionType } from '~/types';
 
 
-const {
-  page: pageStr,
-  categoryId,
-  difficulty,
-} = defineProps<{
+interface Props {
   categoryId: CategoryId;
   difficulty: Difficulty;
-  page: string;
-}>();
-const page = computed(() => Number(pageStr || 1));
-const questionsStore = useQuestionsStore({ categoryId, difficulty });
-const question = computed(() => questionsStore.value?.[page.value]);
+  page: number;
+  question: QuestionType;
+}
 
-const nextLink = computed(() => page.value >= AMOUNT ? undefined : `/questions/${difficulty}/${categoryId}?page=${page.value + 1}#question-title`);
-const prevLink = computed(() => page.value <= 1 ? undefined : `/questions/${difficulty}/${categoryId}?page=${page.value - 1}#question-title`);
-
-const answers = useTemplateRef(`answers`);
+const {
+  question,
+  page,
+  categoryId,
+  difficulty,
+} = defineProps<Props>();
+const { setSelectedValue } = useQuestionsStore({ categoryId, difficulty });
+const nextLink = computed(() =>
+  page >= AMOUNT ? undefined : `/questions/${difficulty}/${categoryId}?page=${page + 1}#question-title`,
+);
+const prevLink = computed(() =>
+  page <= 1 ? undefined : `/questions/${difficulty}/${categoryId}?page=${page - 1}#question-title`,
+);
 
 function listener(e: KeyboardEvent) {
   if (e.key === 'ArrowRight' || e.key === 'Enter') {
     if (nextLink.value == null) navigateTo(`/questions/${difficulty}/${categoryId}/results`);
     else navigateTo(nextLink.value);
   }
+
   if (e.key === 'ArrowLeft' || e.key === 'Backspace') {
     if (nextLink.value == null) navigateTo('/');
     else navigateTo(prevLink.value);
   }
 
-  question.value?.answers.forEach((answer, index) => {
-    if (e.key === String(index + 1)) {
-      const button = answers.value?.querySelector(`[data-answer-number="${index + 1}"]`);
-      if (button instanceof HTMLButtonElement) button.click();
-    }
+  question.answers.forEach((answer, index) => {
+    if (e.key === String(index + 1)) setSelectedValue(question, answer);
   });
 }
 
@@ -46,7 +46,7 @@ onUnmounted(() => window.removeEventListener('keydown', listener));
 
 
 <template>
-  <section v-if="question != null" class="space-y-28 my-4 md:my-8">
+  <section class="space-y-28 my-4 md:my-8">
     <h2 id="question-title" class="text-2xl font-bold text-center">
       {{ question.category }}
     </h2>
@@ -55,11 +55,11 @@ onUnmounted(() => window.removeEventListener('keydown', listener));
         {{ question.question }}
       </p>
     </div>
-    <div ref="answers" class="columns-1 md:columns-2 space-x-4 space-y-4">
+    <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
       <button
-        v-for="answer, index in question.answers" :key="answer" :data-answer-number="index + 1"
+        v-for="answer, index in question.answers" :key="answer"
         :class="{ '!bg-red-100': question.selectedAnswer === answer }" class="select w-full"
-        @click="question.selectedAnswer = answer"
+        @click="setSelectedValue(question, answer)"
       >
         ({{ index + 1 }}) {{ answer }}
       </button>
@@ -85,10 +85,5 @@ onUnmounted(() => window.removeEventListener('keydown', listener));
         Next
       </NuxtLink>
     </div>
-  </section>
-  <section v-else>
-    <h1 class="text-2xl font-bold text-center my-24">
-      No questions
-    </h1>
   </section>
 </template>
