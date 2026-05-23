@@ -20,6 +20,9 @@ const difficulty = params.difficulty as Difficulty;
 
 <template>
   <ClientOnly>
+    <template #fallback>
+      <UiLoading />
+    </template>
     <Results :category-id="categoryId" :difficulty="difficulty" />
   </ClientOnly>
 </template>

@@ -21,8 +21,8 @@ const { answersLength, lastAnsweredQuestion } = useQuestionsStore({ categoryId, 
     </div>
 
     <template #fallback>
-      <button class="btn">
-        LOADING...
+      <button class="btn uppercase">
+        {{ difficulty }} | ...
       </button>
     </template>
   </ClientOnly>
