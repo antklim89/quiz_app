@@ -37,12 +37,23 @@ const question = getQuestion(page);
     <div v-else-if="question == null">
       <p>No Questions</p>
     </div>
-    <Question
-      v-else
-      :page="page"
-      :category-id="categoryId"
-      :difficulty="difficulty"
-      :question="question"
-    />
+    <section v-else class="space-y-12 my-4 md:my-8">
+      <AnswerSelect
+        :page="page"
+        :category-id="categoryId"
+        :difficulty="difficulty"
+        :question="question"
+      />
+      <AnswersCount
+        :category-id="categoryId"
+        :difficulty="difficulty"
+      />
+      <Pagination
+        :question="question"
+        :page="page"
+        :category-id="categoryId"
+        :difficulty="difficulty"
+      />
+    </section>
   </ClientOnly>
 </template>
