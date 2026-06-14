@@ -1,19 +1,20 @@
 <script setup lang="ts">
-import type { CategoryId, Difficulty, QuestionType } from '~/types';
+import type { CategoryId, Difficulty } from '~/types';
 
 
 interface Props {
   categoryId: CategoryId;
   difficulty: Difficulty;
-  question: QuestionType;
+  page: number;
 }
 
-const { question, categoryId, difficulty } = defineProps<Props>();
-const { setSelectedValue } = useQuestionsStore({ categoryId, difficulty });
+const props = defineProps<Props>();
+const { setSelectedValue, getQuestion } = useQuestionsStore(props);
+const question = computed(() => getQuestion(props.page));
 
 function listener(e: KeyboardEvent) {
-  question.answers.forEach((answer, index) => {
-    if (e.key === String(index + 1)) setSelectedValue(question, answer);
+  question.value.answers.forEach((answer, index) => {
+    if (e.key === String(index + 1)) setSelectedValue(question.value, answer);
   });
 }
 
@@ -38,7 +39,7 @@ onUnmounted(() => window.removeEventListener('keydown', listener));
         :class="{ '!bg-green-600': question.selectedAnswer === answer }" class="btn w-full relative"
         @click="setSelectedValue(question, answer)"
       >
-        <span class="border-2 size-6 flex justify-center items-center absolute left-6">
+        <span class="border-2 size-6 flex justify-center items-center absolute left-6 rounded-md">
           {{ index + 1 }}
         </span>
         <span> {{ answer }}</span>

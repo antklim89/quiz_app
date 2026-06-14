@@ -1,28 +1,14 @@
 <script setup lang="ts">
-import { CATEGORIES, DIFFICULTIES } from '~/constants';
-import type { CategoryId, Difficulty } from '~/types';
+import { useCategoryId } from '~/composables/useCategoryId';
+import { useDifficulty } from '~/composables/useDifficulty';
 
 
-definePageMeta({
-  validate: ({ params }) =>
-    !Number.isNaN(Number(params.page || '1'))
-    && Number(params.page || '1') > 0
-    && Number(params.page || '1') <= 10
-    && typeof params.categoryId === 'string'
-    && typeof params.difficulty === 'string'
-    && Object.keys(CATEGORIES).includes(params.categoryId as CategoryId)
-    && DIFFICULTIES.includes(params.difficulty as Difficulty),
-});
+const categoryId = useCategoryId();
+const difficulty = useDifficulty();
+const page = usePage();
 
-const route = useRoute();
-const page = computed(() => Number.parseInt((route.query.page as string) || '1', 10));
-const categoryId = route.params.categoryId as CategoryId;
-const difficulty = route.params.difficulty as Difficulty;
-
-const { useQuestionsFetch, getQuestion } = useQuestionsStore({ categoryId, difficulty });
-const { pending } = useQuestionsFetch();
-
-const question = getQuestion(page);
+const { useQuestionsFetch } = useQuestionsStore({ categoryId: categoryId.value, difficulty: difficulty.value });
+const { pending, error } = useQuestionsFetch();
 </script>
 
 <template>
@@ -33,22 +19,9 @@ const question = getQuestion(page);
     <UiLoading v-if="pending" />
     <UiErrorComponent v-else-if="error" :error="error" />
     <section v-else class="space-y-12 my-4 md:my-8">
-      <AnswerSelect
-        :page="page"
-        :category-id="categoryId"
-        :difficulty="difficulty"
-        :question="question"
-      />
-      <AnswersCount
-        :category-id="categoryId"
-        :difficulty="difficulty"
-      />
-      <Pagination
-        :question="question"
-        :page="page"
-        :category-id="categoryId"
-        :difficulty="difficulty"
-      />
+      <AnswerSelect :page="page" :category-id="categoryId" :difficulty="difficulty" />
+      <AnswersCount :category-id="categoryId" :difficulty="difficulty" />
+      <Pagination :page="page" :category-id="categoryId" :difficulty="difficulty" />
     </section>
   </ClientOnly>
 </template>

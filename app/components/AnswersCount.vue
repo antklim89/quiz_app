@@ -3,14 +3,13 @@ import { AMOUNT } from '~/constants';
 import type { CategoryId, Difficulty } from '~/types';
 
 
-const {
-  categoryId,
-  difficulty,
-} = defineProps<{
+interface Props {
   categoryId: CategoryId;
   difficulty: Difficulty;
-}>();
-const { answersLength } = useQuestionsStore({ categoryId, difficulty });
+}
+
+const props = defineProps<Props>();
+const { answersLength } = useQuestionsStore(props);
 </script>
 
 <template>

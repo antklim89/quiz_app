@@ -1,27 +1,29 @@
 <script setup lang="ts">
 import { AMOUNT } from '~/constants';
-import type { CategoryId, Difficulty, QuestionType } from '~/types';
+import type { CategoryId, Difficulty } from '~/types';
 
 
 interface Props {
   categoryId: CategoryId;
   difficulty: Difficulty;
   page: number;
-  question: QuestionType;
 }
 
 
-const { page, categoryId, difficulty } = defineProps<Props>();
+const props = defineProps<Props>();
 
-const hasNext = computed(() => page < AMOUNT);
-const nextLink = computed(() => hasNext.value ? `/questions/${difficulty}/${categoryId}?page=${page + 1}#question-title` : undefined);
-const hasPrev = computed(() => page > 1);
-const prevLink = computed(() => hasPrev.value ? `/questions/${difficulty}/${categoryId}?page=${page - 1}#question-title` : undefined);
+const { getQuestion } = useQuestionsStore(props);
+const question = computed(() => getQuestion(props.page));
+
+const hasNext = computed(() => props.page < AMOUNT);
+const nextLink = computed(() => hasNext.value ? `/questions/${props.difficulty}/${props.categoryId}?page=${props.page + 1}#question-title` : undefined);
+const hasPrev = computed(() => props.page > 1);
+const prevLink = computed(() => hasPrev.value ? `/questions/${props.difficulty}/${props.categoryId}?page=${props.page - 1}#question-title` : undefined);
 
 function listener(e: KeyboardEvent) {
   if (e.key === 'ArrowRight' || e.key === 'Enter') {
     if (hasNext.value) navigateTo(nextLink.value);
-    else navigateTo(`/questions/${difficulty}/${categoryId}/results`);
+    else navigateTo(`/questions/${props.difficulty}/${props.categoryId}/results`);
   }
 
   if (e.key === 'ArrowLeft' || e.key === 'Backspace') {
