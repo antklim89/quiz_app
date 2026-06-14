@@ -21,7 +21,8 @@ export function useQuestionsStore({ categoryId, difficulty }: { categoryId: Cate
   function useQuestionsFetch() {
     return useAsyncData(`questions:${categoryId}:${difficulty}`, async () => {
       if (questions.value != null) return;
-      const fetchedQuestions = await fetchQuestions({ difficulty, categoryId });
+      const { error, fetchedQuestions } = await fetchQuestions({ difficulty, categoryId });
+      if (error) throw error;
       questions.value = fetchedQuestions;
     }, { server: false, lazy: true });
   }
