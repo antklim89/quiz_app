@@ -27,10 +27,10 @@ export function useQuestionsStore({ categoryId, difficulty }: { categoryId: Cate
     }, { server: false, lazy: true });
   }
 
-  function getQuestion(index: ComputedRef<number>) {
-    return computed(() => {
-      return questions.value?.[index.value];
-    });
+  function getQuestion(index: number) {
+    const question = questions.value?.[index];
+    if (!question) throw createError({ unhandled: false, status: 404, statusText: 'There are no questions for this category and difficulty. Please select another category and difficulty.' });
+    return question;
   }
 
   function setSelectedValue(question: QuestionType, answer: string) {
