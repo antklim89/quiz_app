@@ -31,11 +31,7 @@ const question = getQuestion(page);
       <UiLoading />
     </template>
     <UiLoading v-if="pending" />
-    <UiEmpty
-      v-else-if="question == null"
-      title="No Questions"
-      message="There are no questions for this category and difficulty. Please select another category and difficulty."
-    />
+    <UiErrorComponent v-else-if="error" :error="error" />
     <section v-else class="space-y-12 my-4 md:my-8">
       <AnswerSelect
         :page="page"
