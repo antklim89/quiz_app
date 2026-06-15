@@ -36,7 +36,7 @@ onUnmounted(() => window.removeEventListener('keydown', listener));
     <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
       <button
         v-for="answer, index in question.answers" :key="answer"
-        :class="{ '!bg-green-600': question.selectedAnswer === answer }" class="btn w-full relative"
+        :class="{ 'bg-green-600!': question.selectedAnswer === answer }" class="btn w-full relative"
         @click="setSelectedValue(question, answer)"
       >
         <span class="border-2 size-6 flex justify-center items-center absolute left-6 rounded-md">

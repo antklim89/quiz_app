@@ -39,23 +39,3 @@ useSeoMeta({
     <NuxtPage />
   </NuxtLayout>
 </template>
-
-<style>
-body {
-  font-family:
-    'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-    'Noto Color Emoji';
-}
-html {
-  scroll-behavior: smooth;
-}
-pre {
-  font-family: inherit;
-}
-.link {
-  @apply text-primary-800 hover:underline hover:text-primary-900 transition-colors;
-}
-.btn {
-  @apply bg-primary-600 hover:bg-primary-700 text-white text-center flex justify-center items-center rounded-md px-8 h-11;
-}
-</style>

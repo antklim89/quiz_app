@@ -1,4 +1,6 @@
 import { defineNuxtConfig } from "nuxt/config";
+import tailwindcss from "@tailwindcss/vite";
+
 
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
@@ -10,9 +12,12 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ['@nuxtjs/tailwindcss', '@nuxt/image'],
+  modules: ['@nuxt/image'],
 
   vite: {
+    plugins: [
+      tailwindcss(),
+    ],
     optimizeDeps: {
       include: [
         '@vue/devtools-core',
@@ -23,4 +28,5 @@ export default defineNuxtConfig({
   nitro: {
     preset: 'bun'
   },
+  css: ['./app/assets/css/main.css'],
 });

@@ -1,0 +1,36 @@
+@import 'tailwindcss';
+
+
+@utility container {
+  padding-right: 0.7rem;
+  padding-left: 0.7rem;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+
+:root {
+  --primary: oklch(49.6% 0.265 301.924);
+}
+
+@theme inline {
+  --color-primary: var(--primary);
+}
+
+body {
+  font-family:
+    'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
+}
+html {
+  scroll-behavior: smooth;
+}
+pre {
+  font-family: inherit;
+}
+.link {
+  @apply text-primary hover:underline hover:text-primary/90 transition-colors;
+}
+.btn {
+  @apply bg-primary hover:bg-primary/90 text-white text-center flex justify-center items-center rounded-md px-8 h-11;
+}
