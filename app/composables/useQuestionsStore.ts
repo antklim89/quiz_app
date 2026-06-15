@@ -6,8 +6,19 @@ import type {
 } from '~/types';
 
 
+export function useQuestionsFetch({ categoryId, difficulty }: { categoryId: CategoryId; difficulty: Difficulty }) {
+  return useAsyncData(`questions:${categoryId}:${difficulty}`, async () => {
+    const questions = loadQuestionsFromLocalStorage({ categoryId, difficulty });
+    if (questions != null) return questions;
+
+    const { error, fetchedQuestions } = await fetchQuestions({ difficulty, categoryId });
+    if (error) throw error;
+    return fetchedQuestions;
+  }, { server: false, lazy: true, deep: true });
+}
+
 export function useQuestionsStore({ categoryId, difficulty }: { categoryId: CategoryId; difficulty: Difficulty }) {
-  const questions = useState<QuestionStore | null>(`questions:${categoryId}:${difficulty}`);
+  const { data: questions } = useNuxtData<QuestionStore | null>(`questions:${categoryId}:${difficulty}`);
 
   onMounted(() => {
     questions.value = loadQuestionsFromLocalStorage({ categoryId, difficulty });
@@ -17,15 +28,6 @@ export function useQuestionsStore({ categoryId, difficulty }: { categoryId: Cate
     if (!questions.value) return;
     saveQuestionsToLocalStorage({ questions: questions.value, categoryId, difficulty });
   });
-
-  function useQuestionsFetch() {
-    return useAsyncData(`questions:${categoryId}:${difficulty}`, async () => {
-      if (questions.value != null) return;
-      const { error, fetchedQuestions } = await fetchQuestions({ difficulty, categoryId });
-      if (error) throw error;
-      questions.value = fetchedQuestions;
-    }, { server: false, lazy: true });
-  }
 
   function getQuestion(index: number) {
     const question = questions.value?.[index];
@@ -57,7 +59,7 @@ export function useQuestionsStore({ categoryId, difficulty }: { categoryId: Cate
     lastAnsweredQuestion,
     wrongAnswersLength,
     resetQuestions,
-    useQuestionsFetch,
+    // useQuestionsFetch,
     getQuestion,
     setSelectedValue,
   };

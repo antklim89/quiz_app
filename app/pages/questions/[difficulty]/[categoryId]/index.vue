@@ -7,8 +7,7 @@ const categoryId = useCategoryId();
 const difficulty = useDifficulty();
 const page = usePage();
 
-const { useQuestionsFetch } = useQuestionsStore({ categoryId: categoryId.value, difficulty: difficulty.value });
-const { pending, error } = useQuestionsFetch();
+const { pending, error } = useQuestionsFetch({ categoryId: categoryId.value, difficulty: difficulty.value });
 </script>
 
 <template>
