@@ -6,6 +6,7 @@ import type { NuxtError } from '#app';
 const props = defineProps<{
   error: Error & { status?: undefined } | NuxtError;
   clearError?: () => void;
+  errorButtonText?: string;
 }>();
 
 const handleError = props.clearError || (() => clearError({ redirect: '/' }));
@@ -21,7 +22,7 @@ const handleError = props.clearError || (() => clearError({ redirect: '/' }));
     </p>
 
     <button class="btn" type="button" @click="handleError">
-      Reload
+      {{ props.errorButtonText || 'RELOAD' }}
     </button>
   </div>
 </template>
