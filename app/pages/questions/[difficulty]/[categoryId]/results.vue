@@ -1,6 +1,8 @@
 <script setup lang="ts">
 const categoryId = useCategoryId();
 const difficulty = useDifficulty();
+
+const { pending, error } = useQuestionsFetch({ categoryId: categoryId.value, difficulty: difficulty.value });
 </script>
 
 <template>
@@ -8,6 +10,8 @@ const difficulty = useDifficulty();
     <template #fallback>
       <UiLoading />
     </template>
-    <Results :category-id="categoryId" :difficulty="difficulty" />
+    <UiLoading v-if="pending" />
+    <UiErrorComponent v-else-if="error" :error="error" />
+    <Results v-else :category-id="categoryId" :difficulty="difficulty" />
   </ClientOnly>
 </template>
