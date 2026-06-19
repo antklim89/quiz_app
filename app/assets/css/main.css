@@ -32,5 +32,5 @@ pre {
   @apply text-primary hover:underline hover:text-primary/90 transition-colors;
 }
 .btn {
-  @apply bg-primary hover:bg-primary/90 text-white text-center flex justify-center items-center rounded-md px-8 h-11;
+  @apply bg-primary hover:bg-primary/90 text-white text-center flex justify-center items-center rounded-md px-8 h-11 cursor-pointer;
 }
