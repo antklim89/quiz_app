@@ -22,7 +22,8 @@ const prevLink = computed(() => hasPrev.value ? `/questions/${props.difficulty}/
 
 function listener(e: KeyboardEvent) {
   if (e.key === 'ArrowRight' || e.key === 'Enter') {
-    if (hasNext.value) navigateTo(nextLink.value);
+    if (!question.value.selectedAnswer) return;
+    else if (hasNext.value) navigateTo(nextLink.value);
     else navigateTo(`/questions/${props.difficulty}/${props.categoryId}/results`);
   }
 
