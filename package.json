@@ -25,7 +25,8 @@
     "postinstall": "nuxt prepare",
     "docker:up": "docker compose up",
     "docker:down": "docker compose down",
-    "docker:build": "docker compose build"
+    "docker:build": "docker compose build",
+    "docker:push": "docker compose push"
   },
   "dependencies": {
     "@fontsource/inter": "^5.1.1",
