@@ -9,7 +9,7 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-
+const loading = ref(false);
 const {
   lastAnsweredQuestion,
   questions,
@@ -19,9 +19,14 @@ const {
   resetQuestions,
 } = useQuestionsStore(props);
 
-function navigateToNewQuestions() {
-  resetQuestions();
-  navigateTo(`/questions/${props.difficulty}/${props.categoryId}`);
+async function navigateToNewQuestions() {
+  loading.value = true;
+  try {
+    await resetQuestions();
+    await navigateTo(`/questions/${props.difficulty}/${props.categoryId}`);
+  } finally {
+    loading.value = false;
+  }
 }
 </script>
 
@@ -79,13 +84,13 @@ function navigateToNewQuestions() {
 
     <div class="flex flex-col sm:flex-row justify-center gap-4">
       <button type="button" class="btn uppercase text-center" @click="navigateToNewQuestions">
-        NEW
+        {{ loading ? 'LOADING...' : 'NEW' }}
       </button>
       <NuxtLink class="btn uppercase text-center" to="/">
         HOME
       </NuxtLink>
       <NuxtLink class="btn uppercase text-center" :to="`/questions/${props.difficulty}/${props.categoryId}?page=1`">
-        AGAIN
+        REPEAT
       </NuxtLink>
     </div>
   </section>

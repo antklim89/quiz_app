@@ -38,8 +38,11 @@ export function useQuestionsStore({ categoryId, difficulty }: { categoryId: Cate
   function setSelectedValue(question: QuestionType, answer: string) {
     question.selectedAnswer = answer;
   }
-  function resetQuestions() {
-    questions.value = null;
+
+  async function resetQuestions() {
+    const { error, fetchedQuestions } = await fetchQuestions({ difficulty, categoryId });
+    if (error) throw error;
+    questions.value = fetchedQuestions;
   }
 
   const questionArray = computed(() => questions.value ? Object.values(questions.value) : []);
@@ -59,7 +62,6 @@ export function useQuestionsStore({ categoryId, difficulty }: { categoryId: Cate
     lastAnsweredQuestion,
     wrongAnswersLength,
     resetQuestions,
-    // useQuestionsFetch,
     getQuestion,
     setSelectedValue,
   };
